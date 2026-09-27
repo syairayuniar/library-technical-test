@@ -20,11 +20,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/books/search', [BookCatalogController::class, 'search'])->name('books.search');
     Route::post('/books/{book}/borrow', [BorrowingController::class, 'store'])->name('borrowings.store');
     Route::put('/borrowings/{borrowing}/return', [BorrowingController::class, 'update'])->name('borrowings.return');
+    Route::get('/my-borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('dashboard');
     Route::resource('books', \App\Http\Controllers\Admin\BookController::class);
+    Route::get('/borrowings', [\App\Http\Controllers\Admin\BorrowingController::class, 'index'])->name('borrowings.index');
 });
 
 require __DIR__.'/auth.php';

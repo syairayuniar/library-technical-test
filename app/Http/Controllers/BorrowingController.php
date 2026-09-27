@@ -49,4 +49,11 @@ class BorrowingController extends Controller
 
         return back()->with('success', 'Buku berhasil dikembalikan.');
     }
+
+    public function index()
+    {
+        $borrowings = auth()->user()->borrowings()->with('book')->latest('borrowed_at')->paginate(10);
+        return view('borrowings.index', compact('borrowings'));
+    }
+
 }
