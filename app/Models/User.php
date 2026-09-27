@@ -38,7 +38,7 @@ class User extends Authenticatable
         return $this->hasMany(Borrowing::class);
     }
 
-    public function idAdmin(): bool
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
