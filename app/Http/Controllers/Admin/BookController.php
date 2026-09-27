@@ -19,6 +19,8 @@ class BookController extends Controller
             ->when($request->search, fn ($q) => $q->where('title', 'like', "%{$request->search}%"))
             ->latest()
             ->paginate(10);
+
+        return view('admin.books.index', compact('books'));
     }
 
     /**
