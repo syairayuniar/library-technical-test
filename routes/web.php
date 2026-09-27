@@ -18,9 +18,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'halaman admin dashboard (sementara)';
-    })->name('dashboard');
+    Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('dashboard');
+    Route::resource('books', \App\Http\Controllers\Admin\BookController::class);
 });
 
 require __DIR__.'/auth.php';
