@@ -18,6 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/books', [BookCatalogController::class, 'index'])->name('books.index');
     Route::get('/books/search', [BookCatalogController::class, 'search'])->name('books.search');
+    Route::post('/books/{book}/borrow', [BorrowingController::class, 'store'])->name('borrowings.store');
+    Route::put('/borrowings/{borrowing}/return', [BorrowingController::class, 'update'])->name('borrowings.return');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
