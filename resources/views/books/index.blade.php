@@ -13,7 +13,6 @@
                 </p>
             </div>
 
-            <!-- Live Search Bar -->
             <div class="relative w-full sm:w-80">
                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,13 +28,11 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Grid Card Buku -->
             <div id="books-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($books as $book)
                     <div class="book-card group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white/80 p-6 backdrop-blur-md border border-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-300">
                         
                         <div>
-                            <!-- Baris Kategori & Stok -->
                             <div class="flex items-center justify-between gap-2 mb-4">
                                 <span class="inline-block truncate max-w-[120px] text-[11px] font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200/80">
                                     {{ is_object($book->category) ? $book->category->name : ($book->category ?? 'Umum') }}
@@ -54,7 +51,6 @@
                                 @endif
                             </div>
 
-                            <!-- Judul & Penulis -->
                             <h3 class="book-title text-base font-semibold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
                                 {{ $book->title }}
                             </h3>
@@ -63,7 +59,6 @@
                             </p>
                         </div>
 
-                        <!-- Baris Bawah: Info & Tombol -->
                         <div class="mt-7 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                             <span class="text-xs font-medium text-slate-400">
                                 {{ $book->year ? 'Thn: ' . $book->year : 'Umum' }}
@@ -91,7 +86,7 @@
                 @endforelse
             </div>
 
-            <!-- Pesan jika hasil pencarian kosong -->
+            
             <div id="no-search-results" class="hidden py-16 text-center text-slate-400 text-sm">
                 Tidak ada buku yang sesuai dengan kata kunci pencarian.
             </div>
@@ -99,7 +94,7 @@
         </div>
     </div>
 
-    <!-- Live Search Script -->
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.getElementById('live-book-search');

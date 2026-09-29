@@ -7,16 +7,14 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
   <body class="font-sans antialiased text-zinc-800 bg-[#fafafa]">
-    <!-- Dot-mesh background halus ala Tailwind UI / SaaS modern -->
-    <div class="min-h-screen relative bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+
+  <div class="min-h-screen relative bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         @include('layouts.navigation')
 
         @isset($header)

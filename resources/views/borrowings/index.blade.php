@@ -13,7 +13,6 @@
                 </p>
             </div>
 
-            <!-- Total Badge Pill -->
             <div class="flex items-center gap-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white/80 border border-zinc-200/80 text-zinc-700 shadow-sm backdrop-blur-sm">
                     <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
@@ -45,7 +44,6 @@
                 </div>
             @endif
 
-            <!-- Glass Card Container -->
             <div class="overflow-hidden rounded-2xl bg-white/85 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -61,7 +59,6 @@
                         <tbody class="divide-y divide-zinc-100 text-sm">
                             @forelse($borrowings as $borrowing)
                                 <tr class="hover:bg-zinc-50/50 transition-colors duration-150">
-                                    <!-- Buku Info -->
                                     <td class="py-4 px-6">
                                         <div class="flex items-center gap-3">
                                             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600">
@@ -80,12 +77,10 @@
                                         </div>
                                     </td>
 
-                                    <!-- Tanggal Pinjam -->
                                     <td class="py-4 px-6 text-zinc-600 font-medium whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($borrowing->borrowed_at ?? $borrowing->created_at)->translatedFormat('d M Y') }}
                                     </td>
 
-                                    <!-- Tanggal Kembali -->
                                     <td class="py-4 px-6 whitespace-nowrap">
                                         @if($borrowing->returned_at)
                                             <span class="text-zinc-600 font-medium">
@@ -96,7 +91,6 @@
                                         @endif
                                     </td>
 
-                                    <!-- Status Badge -->
                                     <td class="py-4 px-6 whitespace-nowrap">
                                         @if($borrowing->returned_at)
                                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/70">
@@ -111,7 +105,6 @@
                                         @endif
                                     </td>
 
-                                    <!-- Aksi Pengembalian -->
                                     <td class="py-4 px-6 text-right whitespace-nowrap">
                                         @if(!$borrowing->returned_at)
                                             <form action="{{ route('borrowings.return', $borrowing) }}" method="POST" class="inline-block m-0">

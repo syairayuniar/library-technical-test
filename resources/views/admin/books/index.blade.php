@@ -1,41 +1,70 @@
-<x-admin-layout title="Kelola Buku">
-    <div class="flex justify-between items-center mb-4">
-        <h1 class="text-xl font-medium">Kelola Buku</h1>
-        <a href="{{ route('admin.books.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">+ Tambah Buku</a>
-    </div>
+<x-app-layout>
+    <x-slot name="header">
+        <x-page-header subtitle="Manajemen Katalog" title="Kelola Buku" description="Daftar inventaris dan kontrol stok buku">
+            <x-slot name="action">
+                <a href="{{ route('admin.books.create') }}" class="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-sm">
+                    + Tambah Buku
+                </a>
+            </x-slot>
+        </x-page-header>
+    </x-slot>
 
-    <form method="GET" class="mb-4">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul..."
-            class="border rounded-lg px-3 py-2 w-64">
-    </form>
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            @if(session('success'))
+                <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table class="w-full text-left">
-            <thead class="bg-slate-100 text-sm text-slate-600">
-                <tr><th class="p-3">Judul</th><th class="p-3">Penulis</th><th class="p-3">Kategori</th><th class="p-3">Stok</th><th class="p-3">Aksi</th></tr>
-            </thead>
-            <tbody>
-            @foreach ($books as $book)
-                <tr class="border-t">
-                    <td class="p-3">{{ $book->title }}</td>
-                    <td class="p-3">{{ $book->author }}</td>
-                    <td class="p-3">{{ $book->category->name }}</td>
-                    <td class="p-3">
-                        <span class="px-2 py-1 rounded-full text-xs {{ $book->stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                            {{ $book->stock }}
-                        </span>
-                    </td>
-                    <td class="p-3 space-x-2">
-                        <a href="{{ route('admin.books.edit', $book) }}" class="text-indigo-600">Edit</a>
-                        <form method="POST" action="{{ route('admin.books.destroy', $book) }}" class="inline" onsubmit="return confirm('Yakin hapus buku ini?')">
-                            @csrf @method('DELETE')
-                            <button class="text-red-600">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+            <x-card class="p-0 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-zinc-200/70 bg-zinc-50/60 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                                <th class="py-4 px-6">Judul</th>
+                                <th class="py-4 px-6">Penulis</th>
+                                <th class="py-4 px-6">Kategori</th>
+                                <th class="py-4 px-6 text-center">Stok</th>
+                                <th class="py-4 px-6 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-100 text-sm">
+                            @forelse($books as $book)
+                                <tr class="hover:bg-zinc-50/50">
+                                    <td class="py-4 px-6 font-semibold text-zinc-900">{{ $book->title }}</td>
+                                    <td class="py-4 px-6 text-zinc-600">{{ $book->author }}</td>
+                                    <td class="py-4 px-6 text-zinc-600">{{ $book->category->name ?? '-' }}</td>
+                                    <td class="py-4 px-6 text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $book->stock > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
+                                            {{ $book->stock }}
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right space-x-3">
+                                        <a href="{{ route('admin.books.edit', $book) }}" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800">Edit</a>
+                                        <form action="{{ route('admin.books.destroy', $book) }}" method="POST" class="inline-block m-0" onsubmit="return confirm('Hapus buku ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-xs font-semibold text-rose-600 hover:text-rose-800 cursor-pointer">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="py-12 text-center text-zinc-400 text-sm">Belum ada data buku.</td>
+                                </tr>
+                            @endforelse
+                   
+
+@if(session('error'))
+    <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm">
+        {{ session('error') }}
     </div>
-    <div class="mt-4">{{ $books->links() }}</div>
-</x-admin-layout>
+@endif
+                        </tbody>
+                    </table>
+                </div>
+            </x-card>
+        </div>
+    </div>
+</x-app-layout>
