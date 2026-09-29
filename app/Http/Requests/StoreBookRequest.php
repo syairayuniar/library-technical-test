@@ -25,7 +25,7 @@ class StoreBookRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
-            'category_id' => ['required', 'exist:categories,id'],
+            'category_id' => ['required', 'exists:categories,id'],
             'stock' => ['required', 'integer', 'min:0'],
         ];
     }
