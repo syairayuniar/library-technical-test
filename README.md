@@ -1,58 +1,122 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Peminjaman Buku Perpustakaan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi sederhana untuk mengelola peminjaman buku perpustakaan dengan dua peran pengguna: **Admin** dan **Peminjam**. Dibuat sebagai bagian dari Technical Test Aptitude Test Universitas Gunadarma.
 
-## About Laravel
+## Fitur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Admin
+- Kelola data buku: tambah, edit, hapus, lihat stok & kategori
+- Proteksi hapus buku yang masih memiliki peminjaman aktif
+- Melihat seluruh transaksi peminjaman yang sedang berjalan
+- Dashboard ringkasan (total buku, total stok, peminjaman aktif)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Peminjam
+- Registrasi otomatis mendapat role `peminjam`
+- Melihat daftar buku beserta stok
+- Live search buku (AJAX, tanpa reload halaman)
+- Meminjam buku (stok otomatis berkurang, ditolak jika stok habis)
+- Mengembalikan buku (stok otomatis bertambah, status diperbarui)
+- Melihat riwayat peminjaman miliknya sendiri (tidak bisa melihat milik peminjam lain)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Keamanan
+- Pembatasan akses admin/peminjam diterapkan di **middleware** (backend), bukan hanya UI
+- Percobaan akses halaman admin oleh peminjam lewat URL langsung ditolak (403)
+- Pengecekan stok dilakukan di UI **dan** backend — request manual ke endpoint pinjam tetap ditolak jika stok habis
+- Validasi input dilakukan di server-side (Form Request), tidak hanya JavaScript
 
-## Learning Laravel
+## Teknologi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Laravel 12
+- Blade (layout & component, tanpa duplikasi HTML)
+- MySQL
+- Laravel Breeze (autentikasi)
+- JavaScript (`fetch()`) untuk live search AJAX
+- Tailwind CSS
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalasi
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+1. Clone repository:
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+   git clone <url-repo-ini>
+   cd perpustakaan
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+2. Install dependency PHP:
+```bash
+   composer install
+```
 
-## Contributing
+3. Install dependency JavaScript:
+```bash
+   npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Salin file environment dan generate application key:
+```bash
+   cp .env.example .env
+   php artisan key:generate
+```
 
-## Code of Conduct
+5. Buat database kosong di MySQL, lalu sesuaikan konfigurasi di `.env`:
+```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=perpustakaan_db
+   DB_USERNAME=root
+   DB_PASSWORD=
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. Jalankan migration:
+```bash
+   php artisan migrate
+```
 
-## Security Vulnerabilities
+7. Jalankan seeder (membuat akun admin, kategori, dan beberapa buku contoh):
+```bash
+   php artisan db:seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+8. Build asset frontend:
+```bash
+   npm run build
+```
 
-## License
+9. Jalankan server:
+```bash
+   php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+10. Buka `http://127.0.0.1:8000` di browser.
+
+## Akun Demo
+
+| Role     | Email                                    | Password |
+|----------|------------------------------------------|----------|
+| Admin    | admin@perpustakaan.test                  | password |
+| Peminjam | Daftar sendiri lewat halaman `/register` |    -     |
+
+Akun admin dibuat otomatis lewat `AdminSeeder`, **bukan** ditulis langsung di migration.
+
+## Struktur Role & Middleware
+
+- Semua user baru yang mendaftar otomatis mendapat `role = peminjam`.
+- Middleware `admin` (`app/Http/Middleware/EnsureUserIsAdmin.php`) membatasi semua route di bawah prefix `/admin`, memastikan hanya user dengan `role = admin` yang bisa mengakses — termasuk saat diakses langsung lewat URL.
+- Kepemilikan data peminjaman (riwayat & pengembalian) diverifikasi di level controller (`user_id` yang sedang login harus cocok), bukan hanya disaring di tampilan.
+
+## Cara Testing Singkat
+
+1. Register akun baru → cek role otomatis `peminjam`.
+2. Login sebagai peminjam, coba buka `/admin/books` langsung dari address bar → harus muncul 403.
+3. Pinjam buku dengan stok > 0 → stok berkurang. Buku dengan stok 0 → tombol pinjam nonaktif, dan request manual ke endpoint pinjam tetap ditolak (422).
+4. Kembalikan buku yang dipinjam → stok bertambah, status berubah.
+5. Buka `/my-borrowings` dengan 2 akun peminjam berbeda → riwayat masing-masing tidak tercampur.
+6. Ketik di kolom pencarian `/books` → hasil berubah tanpa reload halaman.
+(saya menambahkan menu berbentuk card jadi tidak perlu mengetik manual untuk pindah antar pages).
+
+## Kendala yang Ditemui
+
+- Beberapa kali salah penulisan rule validasi (`exist` vs `exists`) yang sempat menyebabkan error 500 saat submit form buku — sudah diperbaiki dengan pengecekan ulang di `StoreBookRequest`.
+- Sempat lupa menambahkan `use` statement untuk relasi (`BelongsTo`) dan controller di `routes/web.php`, menyebabkan error class not found — sudah diperbaiki.
+- Perlu menambahkan `casts()` untuk kolom `borrowed_at` dan `returned_at` di model `Borrowing` agar bisa diformat sebagai tanggal di tampilan.
+- Sempat mencoba migrasi dari Tailwind ke CSS custom, namun dibatalkan (rollback via Git) karena menimbulkan beberapa error konflik komponen; project kembali menggunakan Tailwind bawaan Breeze.
