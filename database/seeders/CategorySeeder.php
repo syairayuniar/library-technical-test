@@ -13,7 +13,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (['Fiction', 'Non-Fiction', 'Action', 'History'] as $name) {
+        foreach (['Fiction', 'Non-Fiction', 'Action', 'History', 'Horror', 'Romance'] as $name) {
             Category::firstOrCreate(['name' => $name]);
         }
     }
