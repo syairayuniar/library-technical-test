@@ -53,9 +53,6 @@
 
     <!-- Bottom Action Footer -->
     <div class="mt-6 flex items-center justify-between border-t border-zinc-100/80 pt-4">
-        <span class="text-xs font-medium text-zinc-400 group-hover:text-zinc-600 transition-colors">
-            Aksi
-        </span>
         <span class="text-xs font-semibold text-zinc-800 group-hover:text-indigo-600 transition-colors flex items-center gap-1 group-hover:translate-x-0.5 transition-transform duration-200">
             {!! $actionText !!}
         </span>

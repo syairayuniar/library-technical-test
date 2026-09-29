@@ -30,7 +30,7 @@
                         badge="Khusus Admin"
                         badgeColor="indigo"
                         title="Masuk ke Dashboard Admin"
-                        description="Kelola inventaris koleksi buku, pantau mutasi transaksi peminjaman, dan operasional anggota perpustakaan."
+                        description="Kelola koleksi buku, pantau transaksi peminjaman, dan operasional anggota perpustakaan."
                         actionText="Buka Panel Admin &rarr;">
                         
                         <x-slot name="icon">
@@ -51,8 +51,8 @@
                         :href="route('books.index')"
                         badge="Katalog"
                         badgeColor="zinc"
-                        title="Eksplorasi Koleksi Buku"
-                        description="Jelajahi berbagai judul buku terbaru, cek sisa stok rak, dan ajukan peminjaman secara instan."
+                        title="Koleksi Buku"
+                        description="Lihat koleksi buku, Cek stok yang tersedia, dan Lakukan peminjaman secara cepat."
                         actionText="Buka Katalog &rarr;">
                         
                         <x-slot name="icon">
@@ -67,8 +67,8 @@
                         :href="route('borrowings.index')"
                         :badge="auth()->user()->borrowings()->whereNull('returned_at')->count() . ' Aktif'"
                         badgeColor="emerald"
-                        title="Buku yang Dipinjam"
-                        description="Pantau riwayat buku yang sedang Anda baca dan cek tenggat waktu agar tidak terlambat mengembalikan."
+                        title="Pinjaman Buku"
+                        description="Riwayat buku yang sedang Anda baca dan cek tenggat waktu agar tidak terlambat mengembalikan."
                         actionText="Lihat Peminjaman &rarr;">
                         
                         <x-slot name="icon">
@@ -84,7 +84,7 @@
                         badge="Akun"
                         badgeColor="zinc"
                         title="Pengaturan Profil"
-                        description="Kelola kredensial akun Anda, perbarui alamat surel, dan amankan akun dengan kata sandi baru."
+                        description="Kelola akun Anda, perbarui alamat email, dan amankan akun dengan password baru."
                         actionText="Kelola Akun &rarr;">
                         
                         <x-slot name="icon">

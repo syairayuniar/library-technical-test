@@ -51,9 +51,9 @@ class BorrowingController extends Controller
     }
 
     public function index()
-    {
-        $borrowings = auth()->user()->borrowings()->with('book')->latest('borrowed_at')->paginate(10);
-        return view('borrowings.index', compact('borrowings'));
-    }
+{
+    $borrowings = auth()->user()->borrowings()->with('book')->latest('borrowed_at')->paginate(10);
+    return view('borrowings.index', compact('borrowings'));
+}
 
 }
