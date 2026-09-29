@@ -72,7 +72,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        if ($book->borrowings()->whereNull('returned_at')->exist()) {
+        if ($book->borrowings()->whereNull('returned_at')->exists()) {
             return back()->with('error', 'Buku tidak bisa dihapus karena masih ada peminjaman aktif.');
         }
 
